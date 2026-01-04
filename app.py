@@ -67,17 +67,22 @@ def get_prediction(model, image_tensor, temperature=1.0):
         conf, pred_class = torch.max(probs, 1)
         return pred_class.item(), conf.item(), probs.squeeze().tolist()
 
-def load_random_test_image():
+@st.cache_resource
+def load_dataset():
     # Load dataset just to get images (not efficient but simple for demo)
     try:
         testset = torchvision.datasets.CIFAR10(root='./data', train=False, download=False)
     except:
          # attempt download if not present
          testset = torchvision.datasets.CIFAR10(root='./data', train=False, download=True)
-         
-    idx = np.random.randint(0, len(testset))
-    img, label = testset[idx]
-    return img, label
+    return testset
+
+def load_random_test_image():
+    with st.spinner("Loading random image from CIFAR-10 dataset... (First time may take a minute to download)"):
+        testset = load_dataset()
+        idx = np.random.randint(0, len(testset))
+        img, label = testset[idx]
+        return img, label
 
 # --- Main App ---
 
