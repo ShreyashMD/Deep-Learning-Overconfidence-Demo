@@ -37,7 +37,6 @@ def train():
                'dog', 'frog', 'horse', 'ship', 'truck')
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    # For Mac MPS support (optional but good)
     if torch.backends.mps.is_available():
         device = torch.device("mps")
         
