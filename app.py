@@ -10,7 +10,6 @@ from PIL import Image
 from model import SimpleCNN
 import time
 
-# --- Page Configuration ---
 st.set_page_config(
     page_title="DL Overconfidence Demo",
     page_icon="🤖",
@@ -18,7 +17,6 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# --- Styling ---
 st.markdown("""
 <style>
     .reportview-container {
@@ -33,7 +31,6 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# --- Load Model ---
 @st.cache_resource
 def load_model(model_path='cifar10_model.pth'):
     device = torch.device('cpu') 
@@ -45,7 +42,6 @@ def load_model(model_path='cifar10_model.pth'):
     except FileNotFoundError:
         return None
 
-# --- Helper Functions ---
 classes = ('plane', 'car', 'bird', 'cat', 'deer',
            'dog', 'frog', 'horse', 'ship', 'truck')
 
@@ -84,7 +80,6 @@ def load_random_test_image():
         img, label = testset[idx]
         return img, label
 
-# --- Main App ---
 
 st.title("🤖 Deep Learning Overconfidence Demo")
 st.markdown("""
@@ -155,14 +150,12 @@ with col2:
         pred_idx, confidence, probs = get_prediction(model, img_tensor, temperature)
         pred_label = classes[pred_idx]
         
-        # --- Metrics Display ---
         m_col1, m_col2 = st.columns(2)
         with m_col1:
             st.metric("Predicted Class", pred_label.capitalize())
         with m_col2:
             st.metric("Model Confidence", f"{confidence:.2%}")
         
-        # --- Correctness Check ---
         is_correct = None
         if true_label_idx is not None:
             is_correct = (pred_idx == true_label_idx)
@@ -171,7 +164,6 @@ with col2:
             else:
                 st.error(f"❌ Incorrect Prediction! (True: {classes[true_label_idx]})")
                 
-                # --- Overconfidence Warning ---
                 if confidence >= 0.90:
                     st.warning(
                         "⚠️ **DANGER: OVERCONFIDENCE DETECTED**\n\n"
@@ -179,7 +171,6 @@ with col2:
                         "This is a classic example of an uncalibrated neural network."
                     )
         
-        # --- Visualization ---
         st.subheader("Probability Distribution")
         
         # Prepare data for chart
@@ -215,7 +206,6 @@ with col2:
         
         st.altair_chart(chart, use_container_width=True)
         
-        # --- Educational Context ---
         st.markdown("---")
         st.markdown("#### Why is this happening?")
         with st.expander("Learn about Softmax Overconfidence"):
