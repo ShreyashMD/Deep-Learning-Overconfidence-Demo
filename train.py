@@ -52,7 +52,7 @@ def train():
     
     # Train
     print("Starting Training...")
-    epochs = 3 # Reduced to 3 for faster demo preparation (sufficient for >60% acc)
+    epochs = 3 
     
     for epoch in range(epochs):
         net.train()
