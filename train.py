@@ -36,7 +36,6 @@ def train():
     classes = ('plane', 'car', 'bird', 'cat', 'deer',
                'dog', 'frog', 'horse', 'ship', 'truck')
 
-    # Initialize Model
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     # For Mac MPS support (optional but good)
     if torch.backends.mps.is_available():
@@ -50,7 +49,6 @@ def train():
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.SGD(net.parameters(), lr=0.01, momentum=0.9, weight_decay=5e-4)
     
-    # Train
     print("Starting Training...")
     epochs = 3 
     
@@ -82,13 +80,11 @@ def train():
     
     print("Training Finished.")
 
-    # Save Model
     print("Saving Model...")
     save_path = 'cifar10_model.pth'
     torch.save(net.state_dict(), save_path)
     print(f"Model saved to {save_path}")
 
-    # Evaluate on Test Set
     net.eval()
     correct = 0
     total = 0
